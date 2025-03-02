@@ -68,7 +68,7 @@ contract StringHasher {
     function updateUserHash(
        string memory _id, 
        string memory concatenatedString 
-    ) public returns(bytes32) {
+    ) public returns(bytes32 userHash) {
 
         if(!userHashes[_id].exists) revert UserDoesNotExist();
 
@@ -80,6 +80,16 @@ contract StringHasher {
 
         return hash;
     }
+
+    function getUserHash(
+        string memory _id
+    ) view public returns(bytes32 userHash) {
+        User storage user = userHashes[_id];
+
+        if(!user.exists) revert UserDoesNotExist();
+
+        return user.documentHash;
+    } 
 
     function verifyUserHash(
        string memory _id, 
