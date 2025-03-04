@@ -3,6 +3,12 @@ pragma solidity ^0.8.24;
 
 contract DocumentHasher {
 
+    address public contractOwner;
+
+    constructor() {
+        contractOwner = msg.sender;
+    }
+
     struct Document {
         string owner;
         bytes32 documentHash;
@@ -61,7 +67,8 @@ contract DocumentHasher {
 
     function changeDocumentOwner(
         string memory _documentId,
-        string memory _owner
+        string memory _owner,
+        string memory newOwner
     ) public {
 
         if(!documentHashes[_documentId].exists) revert DocumentDoesNotExist();
@@ -70,9 +77,9 @@ contract DocumentHasher {
 
         if(keccak256(abi.encodePacked(document.owner)) != keccak256(abi.encodePacked(_owner))) revert NotDocumentOwner();
 
-        document.owner = _owner;
+        document.owner = newOwner;
 
-        emit DocumentOwnerUpdated(_documentId, _owner);
+        emit DocumentOwnerUpdated(_documentId, newOwner);
     }
 
     function getDocumentHash(
