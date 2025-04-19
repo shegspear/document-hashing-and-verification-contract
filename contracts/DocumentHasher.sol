@@ -44,6 +44,16 @@ contract DocumentHasher {
         return hash;
     }
 
+    function geDocumentOwner(
+        string memory _documentId
+    ) view public returns(string memory owner_) {
+        if(!documentHashes[_documentId].exists) revert DocumentDoesNotExist();
+
+        Document storage document = documentHashes[_documentId];
+
+        return document.owner;
+    }
+
     function updateDocumentHash(
         string memory _documentId,
         string memory _owner,
